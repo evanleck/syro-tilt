@@ -74,7 +74,7 @@ class Syro # :nodoc:
 
       # Find all potential templates e.g. ones with the same name but different
       # template engines or MIME types.
-      potentials = Dir.glob(File.join(from, '**', '*')).filter do |potential|
+      potentials = Dir.glob(File.join(from, '**', '*')).select do |potential|
         potential.start_with?(path)
       end.sort
 
