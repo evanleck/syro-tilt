@@ -87,6 +87,26 @@ Templates that are only ever used by the `partial` method do not require the
 same naming because `partial` does not set the response's content type.
 
 
+## Caching
+
+There's an optional in-memory cache included that will cache calls to `template`
+and `template_path`. You probably don't want to use the cache during development
+since you'll have to restart your server to see updated templates, but it will
+likely be useful in production. To use it, require `syro/tilt/cache`.
+
+```ruby
+require 'syro'
+require 'syro/tilt'
+require 'syro/tilt/cache'
+
+app = Syro.new do
+  get do
+    render 'home'
+  end
+end
+```
+
+
 ## Installation
 
 Add this line to your application's Gemfile:

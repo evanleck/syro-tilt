@@ -146,4 +146,34 @@ describe Syro::Tilt do
       refute content_for?(:notthere)
     end
   end
+
+  describe '#template' do
+    it 'returns a Tilt template' do
+      assert_instance_of Tilt::ErubiTemplate, template('test/views/typed.html.erb')
+    end
+
+    it "raises an error on missing files (Tilt's default behavior)" do
+      assert_raises(Errno::ENOENT) do
+        template('test/views/notthere.txt.erb')
+      end
+    end
+  end
+
+  describe 'Syro::Tilt::Cache' do
+    require_relative '../lib/syro/tilt/cache'
+
+    prepend Syro::Tilt::Cache
+
+    it 'caches templates' do
+      initial = template('test/views/typed.html.erb')
+
+      assert_equal initial, Syro::Tilt::Cache.template_cache.fetch('test/views/typed.html.erb')
+    end
+
+    it 'caches template paths' do
+      initial = template_path('typed.html', 'test/views', 'html')
+
+      assert_equal initial, Syro::Tilt::Cache.template_path_cache.fetch('typed.html', 'test/views', 'html')
+    end
+  end
 end

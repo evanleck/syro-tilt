@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 Gem::Specification.new do |spec|
   spec.name = 'syro-tilt'
-  spec.version = '0.1.0'
+  spec.version = '0.2.0'
   spec.authors = ['Evan Lecklider']
   spec.email = ['evan@lecklider.com']
   spec.summary = 'Render Tilt templates in Syro routes.'

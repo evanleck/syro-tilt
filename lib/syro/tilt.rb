@@ -51,11 +51,11 @@ class Syro # :nodoc:
     #
     # @return [String]
     #   The path to the template file.
-    def template_path(path, from = nil)
+    def template_path(path, from = nil, accept = nil)
       from ||= templates_directory
       path = File.join(from, path)
 
-      accepts = env.fetch(HTTP_ACCEPT) { EMPTY }.to_s.then do |header|
+      accepts = (accept || env.fetch(HTTP_ACCEPT) { EMPTY }).to_s.then do |header|
         # Taken from Rack::Request#parse_http_accept_header (which is a private
         # method).
         header.split(ACCEPT_SPLIT_MULTIPLES).map do |part|
@@ -116,7 +116,10 @@ class Syro # :nodoc:
     #
     # @return [String]
     def partial(path, locals = {})
-      template(template_path(path, locals.delete(:from))).render(self, locals) { yield if block_given? }
+      accept = env.fetch(HTTP_ACCEPT) { EMPTY }
+      from = locals.delete(:from) { templates_directory }
+
+      template(template_path(path, from, accept)).render(self, locals) { yield if block_given? }
     end
 
     # Set or get the current layout. A layout is just another template to wrap
@@ -141,10 +144,13 @@ class Syro # :nodoc:
     # @option locals [String] :from
     #   The directory to look for templates within.
     def render(path, locals = {})
+      accept = env.fetch(HTTP_ACCEPT) { EMPTY }
+      from = locals.delete(:from) { templates_directory }
+
       content = partial(path, locals.dup) { yield if block_given? }
       content = partial(layout, locals.dup) { content } if layout
 
-      res.headers[Rack::CONTENT_TYPE] = template_mime_type(template_path(path, locals[:from]))
+      res.headers[Rack::CONTENT_TYPE] = template_mime_type(template_path(path, from, accept))
       res.write content
     end
 
