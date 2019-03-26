@@ -1,5 +1,8 @@
 # Syro::Tilt
 
+[![Gem Version](https://badge.fury.io/rb/syro-tilt.svg)](https://badge.fury.io/rb/syro-tilt)
+[![Build Status](https://secure.travis-ci.org/evanleck/syro-tilt.svg)](https://travis-ci.org/evanleck/syro-tilt)
+
 Render [Tilt][tilt] templates in [Syro][syro] routes.
 
 
