@@ -59,11 +59,12 @@ class Syro # :nodoc:
       # method).
       accepts = (accept || env.fetch(HTTP_ACCEPT) { EMPTY }).to_s.split(ACCEPT_SPLIT_MULTIPLES).map do |part|
         attribute, parameters = part.split(ACCEPT_SPLIT_PARTS, 2)
-        quality = 1.0
-
-        if parameters && ACCEPT_CAPTURE_QUALITY.match?(parameters)
-          quality = ACCEPT_CAPTURE_QUALITY.match(parameters)[1].to_f
-        end
+        quality =
+          if parameters =~ ACCEPT_CAPTURE_QUALITY
+            ACCEPT_CAPTURE_QUALITY.match(parameters)[1].to_f
+          else
+            1.0
+          end
 
         [attribute, quality]
       end
