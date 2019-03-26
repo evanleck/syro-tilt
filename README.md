@@ -75,6 +75,18 @@ end
 `content_for`: capture content for use later.
 
 
+## Template File Naming
+
+For templates that will be passed to `render`, it's important that you name your
+templates following the pattern `#{ identifier }.#{ mime_type }.#{
+template_engine }`. For example `home.html.erb` would be returned with the MIME
+type `text/html` (derived from the `.html` extension) and rendered by Tilt using
+the preferred mapping for `.erb` extensions.
+
+Templates that are only ever used by the `partial` method do not require the
+same naming because `partial` does not set the response's content type.
+
+
 ## Installation
 
 Add this line to your application's Gemfile:
