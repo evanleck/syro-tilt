@@ -55,19 +55,17 @@ class Syro # :nodoc:
       from ||= templates_directory
       path = File.join(from, path)
 
-      accepts = (accept || env.fetch(HTTP_ACCEPT) { EMPTY }).to_s.then do |header|
-        # Taken from Rack::Request#parse_http_accept_header (which is a private
-        # method).
-        header.split(ACCEPT_SPLIT_MULTIPLES).map do |part|
-          attribute, parameters = part.split(ACCEPT_SPLIT_PARTS, 2)
-          quality = 1.0
+      # Taken from Rack::Request#parse_http_accept_header (which is a private
+      # method).
+      accepts = (accept || env.fetch(HTTP_ACCEPT) { EMPTY }).to_s.split(ACCEPT_SPLIT_MULTIPLES).map do |part|
+        attribute, parameters = part.split(ACCEPT_SPLIT_PARTS, 2)
+        quality = 1.0
 
-          if parameters && ACCEPT_CAPTURE_QUALITY.match?(parameters)
-            quality = ACCEPT_CAPTURE_QUALITY.match(parameters)[1].to_f
-          end
-
-          [attribute, quality]
+        if parameters && ACCEPT_CAPTURE_QUALITY.match?(parameters)
+          quality = ACCEPT_CAPTURE_QUALITY.match(parameters)[1].to_f
         end
+
+        [attribute, quality]
       end
 
       # Reject "*/*" because it will always match the first thing it is compared
