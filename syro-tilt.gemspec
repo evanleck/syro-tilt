@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/evanleck/syro-tilt'
   spec.license = 'MIT'
   spec.files = `git ls-files`.split("\n")
+  spec.required_ruby_version = '>= 2.3.0'
   spec.require_paths = ['lib']
 
   spec.add_dependency 'syro', '~> 3.0'
