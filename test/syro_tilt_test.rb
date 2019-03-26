@@ -24,7 +24,7 @@ describe Syro::Tilt do
     end
 
     it 'finds the first match for an ambiguous file' do
-      assert_equal 'test/views/plain.txt.erb', template_path('plain')
+      assert_equal 'test/views/plain.anope.erb', template_path('plain')
     end
 
     it "returns nil for files that don't exist" do
@@ -46,7 +46,7 @@ describe Syro::Tilt do
 
   describe '#partial' do
     it 'returns the contents of a template' do
-      assert_equal "Plain text.\n", partial('plain')
+      assert_equal "First plain text.\n", partial('plain')
     end
 
     it 'accepts local variables' do
@@ -93,7 +93,7 @@ describe Syro::Tilt do
       render('plain')
 
       assert_equal 'text/plain', res.headers['Content-Type']
-      assert_equal ["Plain text.\n"], res.body
+      assert_equal ["First plain text.\n"], res.body
     end
 
     it 'writes html text to the response' do
